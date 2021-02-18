@@ -22,6 +22,10 @@ window.onload = function () {
 
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(window.position), gl.STATIC_DRAW);
 
+  drawScene(gl, program, positionAttLocation, positionBuffer)
+}
+
+function drawScene(gl, program, positionAttLocation, positionBuffer){
   //rendering
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -42,7 +46,4 @@ window.onload = function () {
   offset = 0;
   let count = 3;
   gl.drawArrays(primitiveType, offset, count);
-
 }
-
-
