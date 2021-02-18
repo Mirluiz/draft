@@ -1,25 +1,22 @@
 (function () {
     let vertexShader = `
-    // атрибут, который будет получать данные из буфера
-        attribute vec4 a_position;
-         
-        // все шейдеры имеют функцию main
+        uniform vec2 u_resolution;
+        uniform vec2 u_translation;
+        
+        attribute vec2 a_position;
         void main() {
-         
-          // gl_Position - специальная переменная вершинного шейдера,
-          // которая отвечает за установку положения
-          gl_Position = a_position;
+          vec2 translated = a_position + u_translation;
+          vec2 minimized = translated/u_resolution;
+          vec2 pushedTopLeft = minimized - 1.0;
+          gl_Position = vec4(pushedTopLeft * vec2(1, -1), 0, 1);
         }
     `
 
     let fragmentShader = `
-        // фрагментные шейдеры не имеют точности по умолчанию, поэтому нам необходимо её
-        // указать. mediump подойдёт для большинства случаев. Он означает "средняя точность"
+    
         precision mediump float;        
         void main() {
-            // gl_FragColor - специальная переменная фрагментного шейдера.
-            // Она отвечает за установку цвета.
-            gl_FragColor = vec4(1, 0, 0.5, 1); // вернёт красновато-фиолетовый
+            gl_FragColor = vec4(1, 0, 0.5, 1);
         }
     `
 

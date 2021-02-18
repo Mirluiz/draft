@@ -18,7 +18,23 @@
 
     <canvas id="canvas"></canvas>
 
+
+
+    <div>
+        <div>
+            <input type="range" name="xRange" id="xRange" value="X range" min="-100" max="100">
+            <label for="xRange">X range</label>
+        </div>
+
+        <div>
+            <input type="range" name="yRange" id="yRange" value="Y range" min="-100" max="100">
+            <label for="yRange">Y range</label>
+        </div>
+    </div>
+
     <script src="init.js"></script>
+    <script src="inputhandler.js"></script>
+    <script src="geometry.js"></script>
     <script src="points.js"></script>
     <script src="function.js"></script>
     <script src="shaders.js"></script>

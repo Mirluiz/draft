@@ -17,16 +17,29 @@ window.onload = function () {
   const program = createProgram(gl, vertexShader, fragmentShader);
 
   let positionAttLocation = gl.getAttribLocation(program, "a_position");
+
+  let resolutionUniform = gl.getUniformLocation(program, "u_resolution");
+  let translationUniform = gl.getUniformLocation(program, "u_translation");
+
   let positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(window.position), gl.STATIC_DRAW);
+  let figure = window.createRectangle(100, 150);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(figure), gl.STATIC_DRAW);
 
-  drawScene(gl, program, positionAttLocation, positionBuffer)
+  let translation = window.translation;
+
+  requestAnimationFrame(function animate(){
+    drawScene(gl, program, positionAttLocation, resolutionUniform, translationUniform, positionBuffer, translation, figure);
+    requestAnimationFrame(animate);
+  });
+
 }
 
-function drawScene(gl, program, positionAttLocation, positionBuffer){
-  //rendering
+
+//rendering
+function drawScene(gl, program, positionAttLocation, resolutionUniform, translationUniform,  positionBuffer, translation, figure){
+
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.useProgram(program);
@@ -42,8 +55,11 @@ function drawScene(gl, program, positionAttLocation, positionBuffer){
       positionAttLocation, size, type, normalize, stride, offset
   )
 
+  gl.uniform2f(resolutionUniform, gl.canvas.width, gl.canvas.height);
+  gl.uniform2fv(translationUniform, translation);
+
   let primitiveType = gl.TRIANGLES;
   offset = 0;
-  let count = 3;
+  let count = figure.length/2;
   gl.drawArrays(primitiveType, offset, count);
 }
