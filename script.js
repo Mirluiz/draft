@@ -20,17 +20,16 @@ window.onload = function () {
 
   let resolutionUniform = gl.getUniformLocation(program, "u_resolution");
   let translationUniform = gl.getUniformLocation(program, "u_translation");
+  let rotationUniform = gl.getUniformLocation(program, "u_rotation");
 
   let positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  let figure = window.createRectangle(100, 150);
+  let figure = window.createFontFigure("f", 10);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(figure), gl.STATIC_DRAW);
 
-  let translation = window.translation;
-
   requestAnimationFrame(function animate(){
-    drawScene(gl, program, positionAttLocation, resolutionUniform, translationUniform, positionBuffer, translation, figure);
+    drawScene(gl, program, positionAttLocation, resolutionUniform, translationUniform, rotationUniform, positionBuffer, figure);
     requestAnimationFrame(animate);
   });
 
@@ -38,7 +37,19 @@ window.onload = function () {
 
 
 //rendering
-function drawScene(gl, program, positionAttLocation, resolutionUniform, translationUniform,  positionBuffer, translation, figure){
+function drawScene(
+    gl,
+    program,
+    positionAttLocation,
+    resolutionUniform,
+    translationUniform,
+    rotationUniform,
+    positionBuffer,
+    figure
+){
+
+  let translation = window.translation;
+  let rotation = [Math.cos(window.angle*Math.PI/180), Math.sin(window.angle*Math.PI/180)];
 
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -57,6 +68,7 @@ function drawScene(gl, program, positionAttLocation, resolutionUniform, translat
 
   gl.uniform2f(resolutionUniform, gl.canvas.width, gl.canvas.height);
   gl.uniform2fv(translationUniform, translation);
+  gl.uniform2fv(rotationUniform, rotation);
 
   let primitiveType = gl.TRIANGLES;
   offset = 0;
