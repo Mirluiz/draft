@@ -1,17 +1,30 @@
 (function(){
   window.translation = [0, 0];
+  window.scale = [1.0, 1.0];
   window.angle = 0;
 
-  let xHandler = document.querySelector("#xRange");
-  let yHandler = document.querySelector("#yRange");
+  let xTranslateHandler = document.querySelector("#xRange");
+  let yTranslateHandler = document.querySelector("#yRange");
   let rotationHandler = document.querySelector("#rotate");
 
-  xHandler.addEventListener('input', function(){
+  let xScaleHandler = document.querySelector("#xScale");
+  let yScaleHandler = document.querySelector("#yScale");
+
+  xTranslateHandler.addEventListener('input', function(){
     window.translation[0] = +this.value;
   })
 
-  yHandler.addEventListener('input', function(){
+  yTranslateHandler.addEventListener('input', function(){
     window.translation[1] = +this.value;
+  })
+
+
+  xScaleHandler.addEventListener('input', function(){
+    window.scale[0] = +this.value;
+  })
+
+  yScaleHandler.addEventListener('input', function(){
+    window.scale[1] = +this.value;
   })
 
   rotationHandler.addEventListener('input', function(){

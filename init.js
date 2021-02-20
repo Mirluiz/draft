@@ -1,6 +1,6 @@
 (function() {
   const height = 500;
-  const width = 800;
+  const width = 1800;
 
   const canvas = document.getElementById('canvas');
 

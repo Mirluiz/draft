@@ -22,22 +22,34 @@
 
     <div>
         <div>
-            <input type="range" name="xRange" id="xRange" value="X range" min="-100" max="100">
+            <input type="range" name="xRange" id="xRange" value="0" min="-400" max="1800">
             <label for="xRange">X range</label>
         </div>
 
         <div>
-            <input type="range" name="yRange" id="yRange" value="Y range" min="-100" max="100">
+            <input type="range" name="yRange" id="yRange" value="0" min="-400" max="800">
             <label for="yRange">Y range</label>
         </div>
 
         <div>
-            <input type="range" name="rotate" id="rotate" value="10" min="0" max="360">
+            <input type="range" name="rotate" id="rotate" value="0" min="0" max="360">
             <label for="rotate">Rotate</label>
+        </div>
+
+
+        <div>
+            <input type="range" name="xScale" id="xScale" value="1.0" min="-5" max="5">
+            <label for="xScale">X scale</label>
+        </div>
+
+        <div>
+            <input type="range" name="yScale" id="yScale" value="1.0" min="-5" max="5">
+            <label for="yScale">Y scale</label>
         </div>
     </div>
 
     <script src="init.js"></script>
+    <script src="matrix.js"></script>
     <script src="inputhandler.js"></script>
     <script src="geometry.js"></script>
     <script src="points.js"></script>

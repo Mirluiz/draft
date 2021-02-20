@@ -62,6 +62,11 @@
     return ret;
   }
 
+
+
+
+
+
   window.createRectangle = rectangle;
   window.createFontFigure = font;
 

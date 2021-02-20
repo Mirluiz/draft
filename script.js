@@ -19,17 +19,22 @@ window.onload = function () {
   let positionAttLocation = gl.getAttribLocation(program, "a_position");
 
   let resolutionUniform = gl.getUniformLocation(program, "u_resolution");
-  let translationUniform = gl.getUniformLocation(program, "u_translation");
-  let rotationUniform = gl.getUniformLocation(program, "u_rotation");
+  // let translationUniform = gl.getUniformLocation(program, "u_translation");
+  // let rotationUniform = gl.getUniformLocation(program, "u_rotation");
+  let matrixUniform = gl.getUniformLocation(program, "u_matrix");
+
+  let uniforms = {
+    resolutionUniform, matrixUniform
+  };
 
   let positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  let figure = window.createFontFigure("f", 10);
+  let figure = window.createFontFigure("f", 2);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(figure), gl.STATIC_DRAW);
 
   requestAnimationFrame(function animate(){
-    drawScene(gl, program, positionAttLocation, resolutionUniform, translationUniform, rotationUniform, positionBuffer, figure);
+    drawScene(gl, program, positionAttLocation, uniforms, positionBuffer, figure);
     requestAnimationFrame(animate);
   });
 
@@ -41,15 +46,18 @@ function drawScene(
     gl,
     program,
     positionAttLocation,
-    resolutionUniform,
-    translationUniform,
-    rotationUniform,
+    uniforms,
     positionBuffer,
     figure
 ){
+  let matrixUniform = uniforms.matrixUniform;
+  let resolutionUniform = uniforms.resolutionUniform;
 
-  let translation = window.translation;
-  let rotation = [Math.cos(window.angle*Math.PI/180), Math.sin(window.angle*Math.PI/180)];
+  let translationMatrix =window.matrix.m3.translate(window.translation[0], window.translation[1]) ;
+  let rotateMatrix = window.matrix.m3.rotate(window.angle*Math.PI/180);
+  let scaleMatrix = window.matrix.m3.scale(window.scale[0], window.scale[1]);
+
+
 
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -66,12 +74,24 @@ function drawScene(
       positionAttLocation, size, type, normalize, stride, offset
   )
 
-  gl.uniform2f(resolutionUniform, gl.canvas.width, gl.canvas.height);
-  gl.uniform2fv(translationUniform, translation);
-  gl.uniform2fv(rotationUniform, rotation);
+  let projectionMatrix = window.matrix.m3.project(gl.canvas.width, gl.canvas.height);
+  // let matrix = window.matrix.m3.multiple(projectionMatrix, rotateMatrix);
+  let matrix = window.matrix.m3.identity();
+  matrix = window.matrix.m3.multiple(projectionMatrix, matrix);
+  matrix = window.matrix.m3.multiple(translationMatrix, matrix);
+  matrix = window.matrix.m3.multiple(rotateMatrix, matrix);
+  matrix = window.matrix.m3.multiple(scaleMatrix, matrix);
+
+
+  // gl.uniform2f(resolutionUniform, gl.canvas.width, gl.canvas.height);
+  gl.uniformMatrix3fv(matrixUniform, false, matrix)
+  // gl.uniform2fv(translationUniform, translation);
+  // gl.uniform2fv(rotationUniform, rotation);
 
   let primitiveType = gl.TRIANGLES;
   offset = 0;
   let count = figure.length/2;
   gl.drawArrays(primitiveType, offset, count);
+
+
 }
