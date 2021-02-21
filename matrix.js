@@ -50,7 +50,99 @@
     }
   }
 
+  let m4 = {
+    identity: function() {
+      return [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1,
+      ];
+    },
+    translate: (tx, ty, tz) => {
+      return [
+          1, 0, 0, 0,
+          0, 1, 0, 0,
+          0, 0, 1, 0,
+          tx, ty, tz, 1
+      ]
+    },
+    rotate: {
+      x: (angleRad) => {
+        let c = Math.cos(angleRad);
+        let s = Math.sin(angleRad);
+        return [
+          1, 0 , 0, 0,
+          0, c, s , 0,
+          0, -s, c, 0,
+          0, 0 , 0, 1
+        ]
+      },
+      y: (angleRad) => {
+        let c = Math.cos(angleRad);
+        let s = Math.sin(angleRad);
+        return [
+          c, 0 , s, 0,
+          0, 1, 0 , 0,
+          -s, 0, c, 0,
+          0, 0 , 0, 1
+        ]
+      },
+      z: (angleRad) => {
+        let c = Math.cos(angleRad);
+        let s = Math.sin(angleRad);
+        return [
+          c, -s, 0, 0,
+          s, c, 0 , 0,
+          0, 0, 1, 0,
+          0, 0 , 0, 1
+        ]
+      }
+    },
+    scale: (sx, sy, sz) => {
+      return [
+          sx, 0, 0, 0,
+          0, sy, 0, 0,
+          0, 0, sz, 0,
+          0, 0, 0, 1
+      ]
+    },
+    project: (w, h, d) => {
+      return [
+        2 / w, 0, 0, 0,
+        0, -2 / h, 0, 0,
+        0, 0, 2 / d, 0,
+        0, 0, 0, 1,
+      ]
+    }
+  }
+
+  let mCommon = {
+    multiple: (a, b) => {
+      if (a.length != b.length)return;
+
+      let ret = [];
+      let matrixSize = Math.sqrt(a.length);
+
+      let i_cnt = 0;
+      while (i_cnt < a.length) {
+
+        let i_cnt_row = 0;
+        let sum = 0;
+        while (i_cnt_row < matrixSize){
+          sum = sum + a[i_cnt_row + matrixSize*Math.floor(i_cnt/matrixSize)] * b[i_cnt_row * matrixSize + i_cnt % matrixSize];
+          i_cnt_row++;
+        }
+        ret.push(sum);
+        i_cnt++;
+      }
+      return ret;
+    },
+  }
+
   window.matrix = {
-    m3
+    m3,
+    m4,
+    mCommon
   };
 })();

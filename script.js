@@ -17,24 +17,28 @@ window.onload = function () {
   const program = createProgram(gl, vertexShader, fragmentShader);
 
   let positionAttLocation = gl.getAttribLocation(program, "a_position");
+  let colorLocation = gl.getAttribLocation(program, "a_color");
 
-  let resolutionUniform = gl.getUniformLocation(program, "u_resolution");
-  // let translationUniform = gl.getUniformLocation(program, "u_translation");
-  // let rotationUniform = gl.getUniformLocation(program, "u_rotation");
   let matrixUniform = gl.getUniformLocation(program, "u_matrix");
 
   let uniforms = {
-    resolutionUniform, matrixUniform
+    matrixUniform,
+    colorLocation
+
   };
 
   let positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  let figure = window.createFontFigure("f", 2);
+  let figure = window.create3DFontFigure("f", 2);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(figure), gl.STATIC_DRAW);
 
+  let colorBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+  setColors(gl);
+
   requestAnimationFrame(function animate(){
-    drawScene(gl, program, positionAttLocation, uniforms, positionBuffer, figure);
+    drawScene(gl, program, positionAttLocation, uniforms, positionBuffer,colorBuffer, figure);
     requestAnimationFrame(animate);
   });
 
@@ -48,24 +52,31 @@ function drawScene(
     positionAttLocation,
     uniforms,
     positionBuffer,
+    colorBuffer,
     figure
 ){
   let matrixUniform = uniforms.matrixUniform;
-  let resolutionUniform = uniforms.resolutionUniform;
+  let colorLocation = uniforms.colorLocation;
 
-  let translationMatrix =window.matrix.m3.translate(window.translation[0], window.translation[1]) ;
-  let rotateMatrix = window.matrix.m3.rotate(window.angle*Math.PI/180);
-  let scaleMatrix = window.matrix.m3.scale(window.scale[0], window.scale[1]);
+  let translationMatrix =window.matrix.m4.translate(window.translation[0], window.translation[1], window.translation[2]) ;
+  let rotateXMatrix = window.matrix.m4.rotate.x(window.angle[0]*Math.PI/180);
+  let rotateYMatrix = window.matrix.m4.rotate.y(window.angle[1]*Math.PI/180);
+  let rotateZMatrix = window.matrix.m4.rotate.z(window.angle[2]*Math.PI/180);
+  let scaleMatrix = window.matrix.m4.scale(window.scale[0], window.scale[1], 2);
 
 
 
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.enable(gl.CULL_FACE);
+  // gl.enable(gl.DEPTH_TEST);
   gl.useProgram(program);
   gl.enableVertexAttribArray(positionAttLocation);
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  let size = 2;
+
+
+  let size = 3;
   let type = gl.FLOAT;
   let normalize = false;
   let offset = 0;
@@ -74,23 +85,26 @@ function drawScene(
       positionAttLocation, size, type, normalize, stride, offset
   )
 
-  let projectionMatrix = window.matrix.m3.project(gl.canvas.width, gl.canvas.height);
-  // let matrix = window.matrix.m3.multiple(projectionMatrix, rotateMatrix);
-  let matrix = window.matrix.m3.identity();
-  matrix = window.matrix.m3.multiple(projectionMatrix, matrix);
-  matrix = window.matrix.m3.multiple(translationMatrix, matrix);
-  matrix = window.matrix.m3.multiple(rotateMatrix, matrix);
-  matrix = window.matrix.m3.multiple(scaleMatrix, matrix);
+  gl.enableVertexAttribArray(colorLocation);
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+  gl.vertexAttribPointer(
+      colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0
+  )
 
+  let projectionMatrix = window.matrix.m4.project(gl.canvas.width, gl.canvas.height, 400);
+  let matrix = window.matrix.m4.identity();
+  matrix = window.matrix.mCommon.multiple(projectionMatrix, matrix);
+  matrix = window.matrix.mCommon.multiple(translationMatrix, matrix);
+  matrix = window.matrix.mCommon.multiple(rotateXMatrix, matrix);
+  matrix = window.matrix.mCommon.multiple(rotateYMatrix, matrix);
+  matrix = window.matrix.mCommon.multiple(rotateZMatrix, matrix);
+  matrix = window.matrix.mCommon.multiple(scaleMatrix, matrix);
 
-  // gl.uniform2f(resolutionUniform, gl.canvas.width, gl.canvas.height);
-  gl.uniformMatrix3fv(matrixUniform, false, matrix)
-  // gl.uniform2fv(translationUniform, translation);
-  // gl.uniform2fv(rotationUniform, rotation);
+  gl.uniformMatrix4fv(matrixUniform, false, matrix)
 
   let primitiveType = gl.TRIANGLES;
   offset = 0;
-  let count = figure.length/2;
+  let count = figure.length/3;
   gl.drawArrays(primitiveType, offset, count);
 
 
