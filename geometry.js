@@ -85,41 +85,41 @@
         let height = 10*fontSize;
 
         ret = [
-          // upper horizontal
+          // upper horizontal front
           upLeftVertOffset + 0, 0, 0,
-          upLeftVertOffset + upHorizLn, 0, 0,
-          upLeftVertOffset + 0, upHorizW, 0,
           upLeftVertOffset + 0, upHorizW, 0,
           upLeftVertOffset + upHorizLn, 0, 0,
+          upLeftVertOffset + 0, upHorizW, 0,
           upLeftVertOffset + upHorizLn, upHorizW, 0,
+          upLeftVertOffset + upHorizLn, 0, 0,
 
-          // // center vertical
+          // // center vertical front
           centerLeftOffset + 0, centerTopOffset + 0, 0,
-          centerLeftOffset + centerHortLn, centerTopOffset + 0, 0,
-          centerLeftOffset + 0, centerTopOffset + centerHortW, 0,
           centerLeftOffset + 0, centerTopOffset + centerHortW, 0,
           centerLeftOffset + centerHortLn, centerTopOffset + 0, 0,
+          centerLeftOffset + 0, centerTopOffset + centerHortW, 0,
           centerLeftOffset + centerHortLn, centerTopOffset + centerHortW, 0,
+          centerLeftOffset + centerHortLn, centerTopOffset + 0, 0,
 
-          // left vertical
+          // left vertical front
           0, 0, 0,
-          leftVertW, 0, 0,
-          0, leftVertLn, 0,
           0, leftVertLn, 0,
           leftVertW, 0, 0,
+          0, leftVertLn, 0,
           leftVertW, leftVertLn, 0,
+          leftVertW, 0, 0,
 
 
 
-          // upper horizontal
+          // upper horizontal back
           upLeftVertOffset + 0, 0, height,
           upLeftVertOffset + upHorizLn, 0, height,
           upLeftVertOffset + 0, upHorizW, height,
-          upLeftVertOffset + 0, upHorizW, height,
           upLeftVertOffset + upHorizLn, 0, height,
           upLeftVertOffset + upHorizLn, upHorizW, height,
+          upLeftVertOffset + 0, upHorizW, height,
 
-          // center vertical
+          // center vertical back
           centerLeftOffset + 0, centerTopOffset + 0, height,
           centerLeftOffset + centerHortLn, centerTopOffset + 0, height,
           centerLeftOffset + 0, centerTopOffset + centerHortW, height,
@@ -161,11 +161,11 @@
 
           //left vertical bottom wall
           0, leftVertLn, 0,
-          leftVertW, leftVertLn, 0,
           0, leftVertLn, height,
-          0, leftVertLn, height,
-          leftVertW, leftVertLn, 0,
           leftVertW, leftVertLn, height,
+          0, leftVertLn, 0,
+          leftVertW, leftVertLn, height,
+          leftVertW, leftVertLn, 0,
 
           // top wall
           0, 0, 0,
@@ -177,11 +177,11 @@
 
           // top horizontal line bottom wall
           upLeftVertOffset + 0, upHorizW + 0, 0,
-          upLeftVertOffset + upHorizLn, upHorizW + 0, 0,
           upLeftVertOffset + 0, upHorizW + 0, height,
-          upLeftVertOffset + 0, upHorizW + 0, height,
-          upLeftVertOffset + upHorizLn, upHorizW + 0, 0,
           upLeftVertOffset + upHorizLn, upHorizW + 0, height,
+          upLeftVertOffset + 0, upHorizW + 0, 0,
+          upLeftVertOffset + upHorizLn, upHorizW + 0, height,
+          upLeftVertOffset + upHorizLn, upHorizW + 0, 0,
 
           // top horizontal line right wall
           upLeftVertOffset + upHorizLn, 0, 0,
@@ -201,11 +201,11 @@
 
           // center horizontal line bottom wall
           centerLeftOffset + 0, centerTopOffset + centerHortW, 0,
-          centerLeftOffset + centerHortLn, centerTopOffset + centerHortW, 0,
           centerLeftOffset + 0, centerTopOffset + centerHortW, height,
-          centerLeftOffset + 0, centerTopOffset + centerHortW, height,
-          centerLeftOffset + centerHortLn, centerTopOffset + centerHortW, 0,
           centerLeftOffset + centerHortLn, centerTopOffset + centerHortW, height,
+          centerLeftOffset + 0, centerTopOffset + centerHortW, 0,
+          centerLeftOffset + centerHortLn, centerTopOffset + centerHortW, height,
+          centerLeftOffset + centerHortLn, centerTopOffset + centerHortW, 0,
 
           // center horizontal line right wall
           centerLeftOffset + centerHortLn, centerTopOffset + 0, 0,
