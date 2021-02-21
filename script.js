@@ -92,13 +92,15 @@ function drawScene(
   )
 
   let projectionMatrix = window.matrix.m4.project(gl.canvas.width, gl.canvas.height, 400);
-  let matrix = window.matrix.m4.identity();
-  matrix = window.matrix.mCommon.multiple(projectionMatrix, matrix);
+  let matrix = window.matrix.m4.perspective(window.fieldV*Math.PI/180, gl.canvas.clientWidth / gl.canvas.clientHeight, 1, 2000);
+  // let matrix = window.matrix.m4.identity();
+  // matrix = window.matrix.mCommon.multiple(projectionMatrix, matrix);
   matrix = window.matrix.mCommon.multiple(translationMatrix, matrix);
   matrix = window.matrix.mCommon.multiple(rotateXMatrix, matrix);
   matrix = window.matrix.mCommon.multiple(rotateYMatrix, matrix);
-  matrix = window.matrix.mCommon.multiple(rotateZMatrix, matrix);
-  matrix = window.matrix.mCommon.multiple(scaleMatrix, matrix);
+  // matrix = window.matrix.mCommon.multiple(rotateZMatrix, matrix);
+  // matrix = window.matrix.mCommon.multiple(scaleMatrix, matrix);
+
 
   gl.uniformMatrix4fv(matrixUniform, false, matrix)
 

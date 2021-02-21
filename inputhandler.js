@@ -1,7 +1,8 @@
 (function(){
-  window.translation = [0, 0, 0];
+  window.translation = [0, 0, -360];
   window.scale = [2.0, 2.0, 2.0];
-  window.angle = [30, 30, 10];
+  window.angle = [0, 0, 0];
+  window.fieldV = 60;
 
   let xTranslateHandler = document.querySelector("#xRange");
   let yTranslateHandler = document.querySelector("#yRange");
@@ -14,6 +15,8 @@
   let xScaleHandler = document.querySelector("#xScale");
   let yScaleHandler = document.querySelector("#yScale");
   let zScaleHandler = document.querySelector("#zScale");
+
+  let fieldViewHandler = document.querySelector("#fieldV");
 
   xTranslateHandler.addEventListener('input', function(){
     window.translation[0] = +this.value;
@@ -50,6 +53,11 @@
   })
   rotationHandlerZ.addEventListener('input', function(){
     window.angle[2] = +this.value;
+  })
+
+
+  fieldViewHandler.addEventListener('input', function(){
+    window.fieldV = +this.value;
   })
 
 
